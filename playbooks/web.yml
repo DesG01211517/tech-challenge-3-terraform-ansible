@@ -1,0 +1,28 @@
+- name: Configure web server on Amazon Linux 2
+  hosts: web
+  become: true
+  tasks:
+    - name: Ensure Apache is installed
+      ansible.builtin.yum:
+        name: httpd
+        state: present
+
+    - name: Enable and start Apache
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: true
+
+    - name: Deploy index.html
+      ansible.builtin.copy:
+        dest: /var/www/html/index.html
+        mode: '0644'
+        content: |
+          <!doctype html>
+          <html>
+            <head><title>Hello</title></head>
+            <body>
+              <h1>Hello, World!</h1>
+              <p>Tech Challenge 3 is live (provisioned by Ansible).</p>
+            </body>
+          </html>
